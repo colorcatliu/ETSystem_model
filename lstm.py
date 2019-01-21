@@ -54,24 +54,18 @@ test = sequence.pad_sequences(test_1v1, maxlen=max_len)
 
 model = Sequential()
 model.add(Embedding(vocabulary, embedding_size, input_length=max_len))
-model.add(Dropout(0.5))
-model.add(Conv1D(filters, kernel_size, padding='valid', 
-                 activation='relu',strides=1))
-model.add(MaxPooling1D(pool_size=pool_size))
-# model.add(LSTM(lstm_output_size))
-model.add(Flatten())
+model.add(LSTM(lstm_output_size))
 model.add(Dense(9,kernel_initializer='RandomUniform')) # RandomNormal, RandomUniform, TruncatedNormal 
-# model.add(Dense(9))
-# model.add(Activation('sigmoid'))
 model.add(Activation('softmax'))
 
 model.compile(loss='categorical_crossentropy',
              optimizer='adam',metrics=['accuracy'])
 # tensorboard = TensorBoard(log_dir='./logs_1v1')
-history=model.fit(train,categories_train_1v1, batch_size=batch_size, 
-          epochs=50,validation_data=(test, categories_test_1v1), verbose=0) 
-# model.fit(train,categories_train_1v1, batch_size=batch_size,
-#           epochs=epochs,validation_data=(test, categories_test_1v1), callbacks=[tensorboard]) 
+
+#history=model.fit(train,categories_train_1v1, batch_size=batch_size, 
+#          epochs=epochs,validation_data=(test, categories_test_1v1), verbose=0) 
+model.fit(train,categories_train_1v1, batch_size=batch_size,
+          epochs=epochs,validation_data=(test, categories_test_1v1), callbacks=[tensorboard]) 
 
 # loss, acc = model.evaluate(test, categories_test_1v1,batch_size=30)
 # print 'loss:',loss
