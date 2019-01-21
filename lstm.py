@@ -15,6 +15,7 @@ from keras.utils.np_utils import to_categorical
 from sklearn import metrics
 from keras.callbacks import TensorBoard
 
+#load data
 train_1v1 = pickle.load(open('...','r'))
 train_1v1_label = pickle.load(open('...','r'))
 
@@ -31,11 +32,6 @@ categories_test_1v1 = to_categorical(test_1v1_label[0])
 vocabulary = 32127 #  32126 index+1
 max_len = 200
 embedding_size = 128
-
-# Convolution
-kernel_size = 5
-filters = 64
-pool_size = 4
 
 #LSTM
 lstm_output_size  = 70
