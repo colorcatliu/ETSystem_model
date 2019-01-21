@@ -15,6 +15,7 @@ from keras.utils.np_utils import to_categorical
 from sklearn import metrics
 from keras.callbacks import TensorBoard
 
+#load data
 train_1v1 = pickle.load(open('...','r'))
 train_1v1_label = pickle.load(open('...','r'))
 
@@ -37,15 +38,9 @@ kernel_size = 5
 filters = 64
 pool_size = 4
 
-#LSTM
-lstm_output_size  = 70
-
 #Training
 batch_size = 30
 epochs = 3
-
-
-# In[5]:
 
 
 train = sequence.pad_sequences(train_1v1, maxlen=max_len)
@@ -58,20 +53,17 @@ model.add(Dropout(0.5))
 model.add(Conv1D(filters, kernel_size, padding='valid', 
                  activation='relu',strides=1))
 model.add(MaxPooling1D(pool_size=pool_size))
-# model.add(LSTM(lstm_output_size))
 model.add(Flatten())
 model.add(Dense(9,kernel_initializer='RandomUniform')) # RandomNormal, RandomUniform, TruncatedNormal 
-# model.add(Dense(9))
-# model.add(Activation('sigmoid'))
 model.add(Activation('softmax'))
 
 model.compile(loss='categorical_crossentropy',
              optimizer='adam',metrics=['accuracy'])
 # tensorboard = TensorBoard(log_dir='./logs_1v1')
-history=model.fit(train,categories_train_1v1, batch_size=batch_size, 
-          epochs=50,validation_data=(test, categories_test_1v1), verbose=0) 
-# model.fit(train,categories_train_1v1, batch_size=batch_size,
-#           epochs=epochs,validation_data=(test, categories_test_1v1), callbacks=[tensorboard]) 
+#history=model.fit(train,categories_train_1v1, batch_size=batch_size, 
+#          epochs=epochs,validation_data=(test, categories_test_1v1), verbose=0) 
+ model.fit(train,categories_train_1v1, batch_size=batch_size,
+           epochs=epochs,validation_data=(test, categories_test_1v1), callbacks=[tensorboard]) 
 
 # loss, acc = model.evaluate(test, categories_test_1v1,batch_size=30)
 # print 'loss:',loss
